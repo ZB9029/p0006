@@ -1,24 +1,134 @@
-# Compiled class file
-*.class
+/**
+ * This program allows users to input the number of elements in an array,
+ * generates random integers within a specified range for each element, and then
+ * displays the sorted arrays using the bubble sort algorithm and searches for a specific element.
+ */
 
-# Log file
-*.log
+package j1.s.p0006;
 
-# BlueJ files
-*.ctxt
+import java.util.Random;
+import java.util.Scanner;
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+/**
+*
+* @author LeAnh
+*/
+public class J1SP0006 {
 
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
+/**
+ * The main method of the program.
+ *
+ * @param args 
+ */
+public static void main(String[] args) {
+    Random random = new Random();
+    Scanner scanner = new Scanner(System.in);
+    //creating random and scanner object
+    int arraylength,searchvalue;
+    // If user add true data, end of loop
+    while (true) {
+    try {
+        System.out.println("Enter number of array: ");
+        // User input the size of array 
+        arraylength = scanner.nextInt();
+        // If user add true data, end of loop
+        System.out.println("Enter search value: ");
+        // User input which element want to search
+        searchvalue = scanner.nextInt();
+        break;
+    } catch (Exception e) {
+        System.err.println("Error data input");
+        // to clean Scanner
+        scanner.next();       
+    }
+    }
+    //Prompt the user to input the number of elements in the array if user enter wrong data type allow user to enter again untill it true
+    int min_range = 0;
+    int max_range = arraylength;
+    //decale the range of random numbers
+    int[] array = new int[arraylength];
+    //decale the array
+    for (int i = 0; i < array.length; i++) {
+    array[i] = random.nextInt(max_range - min_range + 1) + min_range;
+    }
+    //store random number to array
+    
+    // Sort the array using bubble sort
+    bubbleSort(array, arraylength);
+    //call bubbleSort Function
+    System.out.println("");
+    System.out.print("Sorted array:[");
+    for (int i = 0; i < array.length; i++) {
+    if (i == array.length - 1) {
+        System.out.print(array[i]);
+    } else {
+        System.out.print(array[i] + ", ");
+    }
+    }
+    //print the array
+    System.out.print("]");
+    //output sorted array
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
+    // Perform binary search       
+    int result = binarySearch(array, searchvalue, 0, arraylength - 1);
+    if (result == -1)
+        System.out.println("\nElement not found");
+    else
+        System.out.println("\nFound "+searchvalue+ " at index " + result);
+    }
+
+ /**
+ * Sorts the given array in ascending order using the bubble sort algorithm.
+ *
+ * @param array the array to be sorted
+ * @param arraylength the length of the array
+ */
+
+    static void bubbleSort(int array[], int arraylength) {
+    int i, j, temp;
+    for (i = 0; i < arraylength - 1; i++) {
+    //the number of passes through the array
+    for (j = 0; j < arraylength - 1; j++) {
+        if (array[j] > array[j + 1]) {
+            temp = array[j];
+            array[j] = array[j + 1];
+            array[j + 1] = temp;
+        }
+    }
+    // Swap array[j] and array[j+1] if array[j] > array[j++]
+    }
+    }
+ /**
+ * Performs a binary search on a sorted array to find a specific element.
+ *
+ * @param array the sorted array to search
+ * @param element the element to search for
+ * @param low the low index of the search range
+ * @param high the high index of the search range
+ * @return the index of the element if found, or -1 if not found
+ */
+    static int binarySearch(int array[], int element, int low, int high) {
+    // Repeat until the pointers low and high meet each other
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+        // Calculate the middle index of the current search range
+        if (array[mid] == element)
+        return mid;
+        // If the middle element is equal to the target element, return its index
+        
+        // If the middle element is less than the target element, adjust the 'low' pointer
+        // to search in the right half of the current range
+        if (array[mid] < element){
+            low = mid + 1;
+        }
+        // If the middle element is greater than the target element, adjust the 'high' pointer
+        // to search in the left half of the current range
+        else{
+            high = mid - 1;
+        }
+    }
+    // If the target element is not found in the array, return -1 to indicate it was not found
+    return -1;
+    }
+
+}
